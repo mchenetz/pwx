@@ -1,0 +1,25 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: worker-enable-multipathing
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+        - contents:
+            source: data:text/plain;charset=utf-8;base64,ZGVmYXVsdHMgewogICAgdXNlcl9mcmllbmRseV9uYW1lcyBubwogICAgZW5hYmxlX2ZvcmVpZ24gIl4kIgogICAgcG9sbGluZ19pbnRlcnZhbCAxMAogICAgZmluZF9tdWx0aXBhdGhzIHllcwp9CgpkZXZpY2VzIHsKICAgIGRldmljZSB7CiAgICAgICAgdmVuZG9yICAgICAgICAgICAgICAgICAgICAgICJOVk1FIgogICAgICAgIHByb2R1Y3QgICAgICAgICAgICAgICAgICAgICAiUHVyZSBTdG9yYWdlIEZsYXNoQXJyYXkiCiAgICAgICAgcGF0aF9zZWxlY3RvciAgICAgICAgICAgICAgICJxdWV1ZS1sZW5ndGggMCIKICAgICAgICBwYXRoX2dyb3VwaW5nX3BvbGljeSAgICAgICAgZ3JvdXBfYnlfcHJpbwogICAgICAgIHByaW8gICAgICAgICAgICAgICAgICAgICAgICBhbmEKICAgICAgICBmYWlsYmFjayAgICAgICAgICAgICAgICAgICAgaW1tZWRpYXRlCiAgICAgICAgZmFzdF9pb19mYWlsX3RtbyAgICAgICAgICAgIDEwCiAgICAgICAgdXNlcl9mcmllbmRseV9uYW1lcyAgICAgICAgIG5vCiAgICAgICAgbm9fcGF0aF9yZXRyeSAgICAgICAgICAgICAgIDAKICAgICAgICBmZWF0dXJlcyAgICAgICAgICAgICAgICAgICAwCiAgICAgICAgZGV2X2xvc3NfdG1vICAgICAgICAgICAgICAgIDYwCiAgICB9CiAgICBkZXZpY2UgewogICAgICAgIHZlbmRvciAgICAgICAgICAgICAgICAgICAiUFVSRSIKICAgICAgICBwcm9kdWN0ICAgICAgICAgICAgICAgICAgICJGbGFzaEFycmF5IgogICAgICAgIHBhdGhfc2VsZWN0b3IgICAgICAgICAgICAic2VydmljZS10aW1lIDAiCiAgICAgICAgaGFyZHdhcmVfaGFuZGxlciAgICAgICAgICIxIGFsdWEiCiAgICAgICAgcGF0aF9ncm91cGluZ19wb2xpY3kgICAgIGdyb3VwX2J5X3ByaW8KICAgICAgICBwcmlvICAgICAgICAgICAgICAgICAgICAgYWx1YQogICAgICAgIGZhaWxiYWNrICAgICAgICAgICAgICAgICBpbW1lZGlhdGUKICAgICAgICBwYXRoX2NoZWNrZXIgICAgICAgICAgICB0dXIKICAgICAgICBmYXN0X2lvX2ZhaWxfdG1vICAgICAgICAgIDEwCiAgICAgICAgdXNlcl9mcmllbmRseV9uYW1lcyAgICAgIG5vCiAgICAgICAgbm9fcGF0aF9yZXRyeSAgICAgICAgICAgIDAKICAgICAgICBmZWF0dXJlcyAgICAgICAgICAgICAgICAgMAogICAgICAgIGRldl9sb3NzX3RtbyAgICAgICAgICAgICA2MDAKICAgIH0KfQoKYmxhY2tsaXN0X2V4Y2VwdGlvbnMgewogICAgICAgIHByb3BlcnR5ICIoU0NTSV9JREVOVF98SURfV1dOKSIKfQoKYmxhY2tsaXN0IHsKICAgICAgZGV2bm9kZSAiXnB4ZFswLTldKiIKICAgICAgZGV2bm9kZSAiXnB4ZCoiCiAgICAgIGRldmljZSB7CiAgICAgICAgdmVuZG9yICJWTXdhcmUiCiAgICAgICAgcHJvZHVjdCAiVmlydHVhbCBkaXNrIgogICAgICB9Cn0K
+          mode: 420
+          overwrite: true
+          path: /etc/multipath.conf
+    systemd:
+      units:
+        - name: multipathd.service
+          enabled: true
+  # The above manifest enables multipathing for FiberChannel connections. To add iSCSI based FlashArray support,
+  # uncomment the lines below.
+  # - name: iscsid.service
+  # enabled: true
